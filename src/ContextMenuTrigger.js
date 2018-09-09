@@ -15,6 +15,7 @@ export default class ContextMenuTrigger extends Component {
         disable: PropTypes.bool,
         holdToDisplay: PropTypes.number,
         posX: PropTypes.number,
+        showOnClick: PropTypes.bool,
         posY: PropTypes.number,
         renderTag: PropTypes.oneOfType([
             PropTypes.node,
@@ -91,6 +92,7 @@ export default class ContextMenuTrigger extends Component {
         this.handleContextClick(event);
         callIfExists(this.props.attributes.onContextMenu, event);
     }
+    
 
     handleContextClick = (event) => {
         if (this.props.disable) return;
@@ -127,6 +129,15 @@ export default class ContextMenuTrigger extends Component {
             showMenu(showMenuConfig);
         }
     }
+    
+    handleClick = (event) => {
+      if (this.props.showOnClick) {
+         event.preventDefault();
+        event.stopPropagation();
+        showMenu(showMenuConfig);
+      }
+      callIfExists(this.props.attributes.onClick, event);
+    }
 
     elemRef = (c) => {
         this.elem = c;
@@ -139,6 +150,7 @@ export default class ContextMenuTrigger extends Component {
             onContextMenu: this.handleContextMenu,
             onMouseDown: this.handleMouseDown,
             onMouseUp: this.handleMouseUp,
+            onClick: this.handleClick,
             onTouchStart: this.handleTouchstart,
             onTouchEnd: this.handleTouchEnd,
             onMouseOut: this.handleMouseOut,
